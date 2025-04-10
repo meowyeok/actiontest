@@ -2,18 +2,27 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]  # main 브랜치에 push 될 때 실행됨
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .  # index.html이 있는 디렉토리
+          path: .  # index.html이 위치한 경로
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
