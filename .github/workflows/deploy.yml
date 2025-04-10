@@ -9,11 +9,15 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Pages
@@ -22,7 +26,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: .  # index.html이 위치한 경로
+          path: '.'  # index.html 위치
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
